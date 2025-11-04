@@ -1,3 +1,27 @@
 spring:
   application:
     name: servicio-usuarios
+
+# Puerto en el que correrá este microservicio
+server:
+  port: 8080
+
+# --- Configuración de Base de Datos (PostgreSQL) ---
+  datasource:
+    # Conecta a la base de datos de usuarios
+    url: jdbc:postgresql://localhost:5432/usuarios_db
+    username: postgres
+    password: TE22003
+
+# --- Configuración de JPA (Hibernate) ---
+  jpa:
+    hibernate:
+      # 'update' es bueno para desarrollo
+      ddl-auto: update
+    # Muestra el SQL en la consola
+    show-sql: true
+
+# --- Configuración de Kafka (Básica) ---
+  kafka:
+    # Solo necesita saber dónde está el bróker de Kafka
+    bootstrap-servers: localhost:9092

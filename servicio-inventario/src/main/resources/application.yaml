@@ -1,3 +1,32 @@
 spring:
   application:
     name: servicio-inventario
+server:
+  port: 8082 # Otro puerto diferente
+
+# --- Configuración de Base de Datos (PostgreSQL) ---
+  datasource:
+    # Conecta a la base de datos de inventario
+    url: jdbc:postgresql://localhost:5432/inventario_db
+    username: postgres
+    password: TE22003
+
+# --- Configuración de JPA (Hibernate) ---
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+# --- Configuración de Kafka (Consumidor) ---
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      # Identificador para el grupo de consumidores
+      group-id: inventario-group
+      # Deserializador para la "llave"
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # Deserializador para el "valor" (JSON)
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      # ¡IMPORTANTE! Permite a Kafka deserializar tus clases DTO
+      properties:
+        spring.json.trusted.packages: "*"
