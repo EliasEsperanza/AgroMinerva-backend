@@ -1,3 +1,26 @@
+server:
+  port: 8084
+
 spring:
   application:
     name: servicio-comercial
+  datasource:
+    url: jdbc:postgresql://localhost:5432/comercial_db
+    username: postgres
+    password: 23May@2004
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
+  sql:
+    init:
+      platform: postgresql
+
+logging:
+  level:
+    com.agrominerva.comercial: DEBUG
+    org.hibernate.SQL: DEBUG

@@ -1,27 +1,28 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: servicio-productos
-server:
-  port: 8081 # Un puerto diferente
-
-# --- Configuración de Base de Datos (PostgreSQL) ---
   datasource:
-    # Conecta a la base de datos de productos
     url: jdbc:postgresql://localhost:5432/productos_db
     username: postgres
-    password: TE22003
-
-# --- Configuración de JPA (Hibernate) ---
+    password: 23May@2004
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
-
-# --- Configuración de Kafka (Productor) ---
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
   kafka:
     bootstrap-servers: localhost:9092
     producer:
-      # Serializador para la "llave" del mensaje (usualmente un String)
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      # Serializador para el "valor" (el objeto/DTO). Usamos JSON.
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+logging:
+  level:
+    com.agrominerva.productos: DEBUG
+    org.springframework.kafka: DEBUG
