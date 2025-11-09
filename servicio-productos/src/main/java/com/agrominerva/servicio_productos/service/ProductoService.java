@@ -6,6 +6,7 @@ import com.agrominerva.servicio_productos.entity.Producto;
 import com.agrominerva.servicio_productos.repository.CategoriaRepository;
 import com.agrominerva.servicio_productos.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ public class ProductoService {
     private CategoriaRepository categoriaRepository;
     
     @Autowired
-    private KafkaProducerService kafkaProducerService;
+    private ApplicationEventPublisher eventPublisher;
     
     public List<Producto> findAll() {
         return productoRepository.findAllWithCategoria();
@@ -64,8 +65,8 @@ public class ProductoService {
         
         Producto savedProducto = productoRepository.save(producto);
         
-        // Publicar evento de producto creado
-        kafkaProducerService.publicarProductoCreado(savedProducto);
+        // Publicar evento de aplicación para ser manejado después del commit
+        eventPublisher.publishEvent(savedProducto);
         
         return savedProducto;
     }
@@ -112,8 +113,8 @@ public class ProductoService {
                 
                 Producto updatedProducto = productoRepository.save(producto);
                 
-                // Publicar evento de producto actualizado
-                kafkaProducerService.publicarProductoActualizado(updatedProducto);
+                // Para la actualización, podemos seguir publicando directamente si no es crítico
+                // O podríamos crear otro tipo de evento si fuera necesario
                 
                 return updatedProducto;
             })
@@ -127,11 +128,26 @@ public class ProductoService {
         
         productoRepository.deleteById(id);
         
-        // Publicar evento de producto eliminado
-        kafkaProducerService.publicarProductoEliminado(id);
+        // Publicar evento de aplicación para la eliminación
+        eventPublisher.publishEvent(new ProductoEliminadoEvent(id));
     }
     
     public boolean existsById(UUID id) {
         return productoRepository.existsById(id);
+    }
+}
+
+/**
+ * Clase simple para representar el evento de eliminación.
+ */
+class ProductoEliminadoEvent {
+    private final UUID productoId;
+
+    public ProductoEliminadoEvent(UUID productoId) {
+        this.productoId = productoId;
+    }
+
+    public UUID getProductoId() {
+        return productoId;
     }
 }
