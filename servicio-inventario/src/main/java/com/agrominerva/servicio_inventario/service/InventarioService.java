@@ -1,10 +1,13 @@
 package com.agrominerva.servicio_inventario.service;
 
 import com.agrominerva.servicio_inventario.dto.VentaDTO;
+import com.agrominerva.servicio_inventario.event.StockActualizadoEvent;
 import com.agrominerva.servicio_inventario.entity.InventarioStock;
 import com.agrominerva.servicio_inventario.repository.InventarioStockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationEventPublisher;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,7 +21,7 @@ public class InventarioService {
     private InventarioStockRepository inventarioRepository;
     
     @Autowired
-    private KafkaProducerService kafkaProducerService;
+    private ApplicationEventPublisher eventPublisher;
     
     public List<InventarioStock> findAll() {
         return inventarioRepository.findAll();
@@ -42,8 +45,8 @@ public class InventarioService {
         InventarioStock nuevoStock = new InventarioStock(productoId, 0);
         InventarioStock saved = inventarioRepository.save(nuevoStock);
         
-        // Publicar evento de stock actualizado
-        kafkaProducerService.publicarStockActualizado(productoId, 0);
+        // Publicar evento para ser manejado asíncronamente
+        eventPublisher.publishEvent(new StockActualizadoEvent(productoId, 0));
         
         return saved;
     }
@@ -56,8 +59,8 @@ public class InventarioService {
         inventario.setStock(nuevoStock);
         InventarioStock updated = inventarioRepository.save(inventario);
         
-        // Publicar evento de stock actualizado
-        kafkaProducerService.publicarStockActualizado(productoId, nuevoStock);
+        // Publicar evento para ser manejado asíncronamente
+        eventPublisher.publishEvent(new StockActualizadoEvent(productoId, nuevoStock));
         
         return updated;
     }
@@ -65,7 +68,7 @@ public class InventarioService {
     @Transactional
     public InventarioStock aumentarStock(UUID productoId, Integer cantidad) {
         if (cantidad == null || cantidad <= 0) {
-            throw new RuntimeException("La cantidad debe ser mayor a 0");
+            throw new IllegalArgumentException("La cantidad a aumentar debe ser un número positivo.");
         }
         
         InventarioStock inventario = inventarioRepository.findByProductoId(productoId)
@@ -74,8 +77,8 @@ public class InventarioService {
         inventario.aumentarStock(cantidad);
         InventarioStock updated = inventarioRepository.save(inventario);
         
-        // Publicar evento de stock actualizado
-        kafkaProducerService.publicarStockActualizado(productoId, updated.getStock());
+        // Publicar evento para ser manejado asíncronamente
+        eventPublisher.publishEvent(new StockActualizadoEvent(productoId, updated.getStock()));
         
         return updated;
     }
@@ -102,8 +105,8 @@ public class InventarioService {
                 inventario.disminuirStock(cantidad);
                 inventarioRepository.save(inventario);
                 
-                // Publicar evento de stock actualizado
-                kafkaProducerService.publicarStockActualizado(productoId, inventario.getStock());
+                // Publicar evento para ser manejado asíncronamente
+                eventPublisher.publishEvent(new StockActualizadoEvent(productoId, inventario.getStock()));
                 
             } catch (RuntimeException e) {
                 throw new RuntimeException("Error procesando venta para producto " + productoId + ": " + e.getMessage());

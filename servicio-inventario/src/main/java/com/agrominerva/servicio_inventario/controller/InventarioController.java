@@ -64,7 +64,7 @@ public class InventarioController {
     @PatchMapping("/producto/{productoId}/aumentar")
     public ResponseEntity<InventarioStock> aumentarStock(
             @PathVariable UUID productoId,
-            @RequestParam Integer cantidad) {
+            @RequestParam(name = "cantidad", required = false) Integer cantidad) {
         try {
             InventarioStock inventario = inventarioService.aumentarStock(productoId, cantidad);
             return ResponseEntity.ok(inventario);
