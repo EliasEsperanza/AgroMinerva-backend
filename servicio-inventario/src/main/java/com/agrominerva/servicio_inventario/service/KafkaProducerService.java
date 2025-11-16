@@ -1,7 +1,7 @@
 package com.agrominerva.servicio_inventario.service;
 
 import com.agrominerva.servicio_inventario.dto.StockActualizadoDTO;
-import com.agrominerva.servicio_inventario.event.StockActualizadoEvent;
+import com.agrominerva.servicio_inventario.service.StockActualizadoEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
