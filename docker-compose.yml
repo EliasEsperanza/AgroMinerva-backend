@@ -1,27 +1,33 @@
 version: '3.9'
+
 services:
-  # Zookeeper y Kafka
+  # === ZOOKEEPER ===
   zookeeper:
     image: bitnami/zookeeper:latest
     container_name: zookeeper
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+      ALLOW_ANONYMOUS_LOGIN: yes
     ports:
       - "2181:2181"
+    networks:
+      - micro_net
 
+  # === KAFKA ===
   kafka:
     image: bitnami/kafka:latest
     container_name: kafka
     environment:
-      - KAFKA_BROKER_ID=1
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
-      - ALLOW_PLAINTEXT_LISTENER=yes
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      ALLOW_PLAINTEXT_LISTENER: yes
     depends_on:
       - zookeeper
     ports:
       - "9092:9092"
+    networks:
+      - micro_net
 
   # === SERVICIO USUARIOS ===
   postgres_usuarios:
@@ -34,6 +40,8 @@ services:
       - usuarios_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+    networks:
+      - micro_net
 
   servicio_usuarios:
     build: ./servicio-usuarios
@@ -41,12 +49,14 @@ services:
       DB_HOST: postgres_usuarios
       DB_USER: postgres
       DB_PASS: TE22003
-      KAFKA_HOST: kafka
+      KAFKA_HOST: kafka:9092
     depends_on:
       - postgres_usuarios
       - kafka
     ports:
       - "8080:8080"
+    networks:
+      - micro_net
 
   # === SERVICIO PRODUCTOS ===
   postgres_productos:
@@ -57,6 +67,8 @@ services:
       POSTGRES_PASSWORD: TE22003
     volumes:
       - productos_data:/var/lib/postgresql/data
+    networks:
+      - micro_net
 
   servicio_productos:
     build: ./servicio-productos
@@ -64,12 +76,14 @@ services:
       DB_HOST: postgres_productos
       DB_USER: postgres
       DB_PASS: TE22003
-      KAFKA_HOST: kafka
+      KAFKA_HOST: kafka:9092
     depends_on:
       - postgres_productos
       - kafka
     ports:
       - "8085:8080"
+    networks:
+      - micro_net
 
   # === SERVICIO INVENTARIO ===
   postgres_inventario:
@@ -80,6 +94,8 @@ services:
       POSTGRES_PASSWORD: TE22003
     volumes:
       - inventario_data:/var/lib/postgresql/data
+    networks:
+      - micro_net
 
   servicio_inventario:
     build: ./servicio-inventario
@@ -87,12 +103,14 @@ services:
       DB_HOST: postgres_inventario
       DB_USER: postgres
       DB_PASS: TE22003
-      KAFKA_HOST: kafka
+      KAFKA_HOST: kafka:9092
     depends_on:
       - postgres_inventario
       - kafka
     ports:
       - "8083:8080"
+    networks:
+      - micro_net
 
   # === SERVICIO VENTAS ===
   postgres_ventas:
@@ -103,6 +121,8 @@ services:
       POSTGRES_PASSWORD: TE22003
     volumes:
       - ventas_data:/var/lib/postgresql/data
+    networks:
+      - micro_net
 
   servicio_ventas:
     build: ./servicio-ventas
@@ -110,12 +130,14 @@ services:
       DB_HOST: postgres_ventas
       DB_USER: postgres
       DB_PASS: TE22003
-      KAFKA_HOST: kafka
+      KAFKA_HOST: kafka:9092
     depends_on:
       - postgres_ventas
       - kafka
     ports:
       - "8081:8080"
+    networks:
+      - micro_net
 
   # === SERVICIO COMERCIAL ===
   postgres_comercial:
@@ -126,6 +148,8 @@ services:
       POSTGRES_PASSWORD: TE22003
     volumes:
       - comercial_data:/var/lib/postgresql/data
+    networks:
+      - micro_net
 
   servicio_comercial:
     build: ./servicio-comercial
@@ -133,12 +157,14 @@ services:
       DB_HOST: postgres_comercial
       DB_USER: postgres
       DB_PASS: TE22003
-      KAFKA_HOST: kafka
+      KAFKA_HOST: kafka:9092
     depends_on:
       - postgres_comercial
       - kafka
     ports:
       - "8084:8080"
+    networks:
+      - micro_net
 
   # === SERVICIO CONTENIDO ===
   postgres_contenido:
@@ -149,6 +175,8 @@ services:
       POSTGRES_PASSWORD: TE22003
     volumes:
       - contenido_data:/var/lib/postgresql/data
+    networks:
+      - micro_net
 
   servicio_contenido:
     build: ./servicio-contenido
@@ -156,12 +184,14 @@ services:
       DB_HOST: postgres_contenido
       DB_USER: postgres
       DB_PASS: TE22003
-      KAFKA_HOST: kafka
+      KAFKA_HOST: kafka:9092
     depends_on:
       - postgres_contenido
       - kafka
     ports:
       - "8082:8080"
+    networks:
+      - micro_net
 
 volumes:
   usuarios_data:
@@ -170,3 +200,6 @@ volumes:
   ventas_data:
   comercial_data:
   contenido_data:
+
+networks:
+  micro_net:

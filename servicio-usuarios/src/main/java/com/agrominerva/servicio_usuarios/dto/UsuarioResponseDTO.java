@@ -10,6 +10,7 @@ public class UsuarioResponseDTO {
     private UUID id;
     private String email;
     private String nombre;
+    private String telefono;
     private Rol rol;
     private boolean activo;
     private LocalDateTime createdAt;

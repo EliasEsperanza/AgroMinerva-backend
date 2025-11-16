@@ -31,6 +31,7 @@ public class UsuarioController {
             usuario.setPasswordHash(request.getPassword()); // Pasamos la contra plana
             usuario.setNombre(request.getNombre());
             usuario.setRol(request.getRol());
+            usuario.setTelefono(request.getTelefono());
 
             // 2. Llamar al servicio
             Usuario nuevoUsuario = usuarioService.crearUsuario(usuario);
@@ -41,6 +42,7 @@ public class UsuarioController {
             response.setEmail(nuevoUsuario.getEmail());
             response.setNombre(nuevoUsuario.getNombre());
             response.setRol(nuevoUsuario.getRol());
+            response.setTelefono(nuevoUsuario.getTelefono());
             response.setActivo(nuevoUsuario.isActivo());
             response.setCreatedAt(nuevoUsuario.getCreatedAt());
 
@@ -74,6 +76,7 @@ public class UsuarioController {
             response.setEmail(usuario.getEmail());
             response.setNombre(usuario.getNombre());
             response.setRol(usuario.getRol());
+            response.setTelefono(usuario.getTelefono());
             response.setActivo(usuario.isActivo());
             response.setCreatedAt(usuario.getCreatedAt());
 
@@ -95,6 +98,7 @@ public class UsuarioController {
             response.setEmail(usuario.getEmail());
             response.setNombre(usuario.getNombre());
             response.setRol(usuario.getRol());
+            response.setTelefono(usuario.getTelefono());
             response.setActivo(usuario.isActivo());
             response.setCreatedAt(usuario.getCreatedAt());
             return ResponseEntity.ok(response);
@@ -111,6 +115,7 @@ public class UsuarioController {
                 Usuario usuario = usuarioOpt.get();
                 usuario.setEmail(request.getEmail());
                 usuario.setNombre(request.getNombre());
+                usuario.setTelefono(request.getTelefono());
                 usuario.setRol(request.getRol());
                 // Nota: No actualizamos la contraseña aquí por simplicidad
     
@@ -120,6 +125,7 @@ public class UsuarioController {
                 response.setId(updatedUsuario.getId());
                 response.setEmail(updatedUsuario.getEmail());
                 response.setNombre(updatedUsuario.getNombre());
+                response.setTelefono(updatedUsuario.getTelefono());
                 response.setRol(updatedUsuario.getRol());
                 response.setActivo(updatedUsuario.isActivo());
                 response.setCreatedAt(updatedUsuario.getCreatedAt());
