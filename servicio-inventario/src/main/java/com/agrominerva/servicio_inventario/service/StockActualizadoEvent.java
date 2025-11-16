@@ -1,4 +1,4 @@
-package com.agrominerva.servicio_inventario.event;
+package com.agrominerva.servicio_inventario.service;
 
 import java.util.UUID;
 
