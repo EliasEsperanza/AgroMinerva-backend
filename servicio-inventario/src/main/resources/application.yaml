@@ -16,21 +16,21 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         format_sql: true
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      group-id: inventario-group
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "com.agrominerva.inventario.dto,*"
-        spring.json.use.type.headers: false
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  cloud:
+    stream:
+      # La configuración de los consumidores se mantiene
+      function:
+        definition: manejarProductoCreado;manejarProductoEliminado;manejarVentaRegistrada
+      kafka:
+        binder:
+          brokers: localhost:9092
 
 logging:
   level:
     com.agrominerva.inventario: DEBUG
     org.springframework.kafka: DEBUG
+
+# URL del servicio que recibirá la notificación de stock actualizado
+services:
+  notificaciones:
+    url: http://localhost:8084/api/notificaciones # Cambia esto por la URL real
