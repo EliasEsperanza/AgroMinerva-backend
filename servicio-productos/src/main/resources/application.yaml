@@ -1,13 +1,13 @@
 server:
-  port: 8080
+  port: 8085
 
 spring:
   application:
     name: servicio-productos
   datasource:
-    url: jdbc:postgresql://postgres_productos:5432/productos_db
+    url: jdbc:postgresql://localhost:5432/productos_db
     username: postgres
-    password: TE22003
+    password: 23May@2004
   jpa:
     hibernate:
       ddl-auto: update
@@ -27,4 +27,4 @@ app:
     inventario:
       # Si usas Docker Compose, usa el nombre del servicio
       # Ejemplo: http://servicio-inventario:8082
-      url: http://localhost:8082
+      url: http://localhost:8083

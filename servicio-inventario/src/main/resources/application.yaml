@@ -1,13 +1,13 @@
 server:
-  port: 8080
+  port: 8083
 
 spring:
   application:
     name: servicio-inventario
   datasource:
-    url: jdbc:postgresql://postgres_inventario:5432/inventario_db
+    url: jdbc:postgresql://localhost:5432/inventario_db
     username: postgres
-    password: TE22003
+    password: 23May@2004
   jpa:
     hibernate:
       ddl-auto: update
@@ -30,7 +30,8 @@ logging:
     com.agrominerva.inventario: DEBUG
     org.springframework.kafka: DEBUG
 
-# URL del servicio que recibirá la notificación de stock actualizado
-services:
-  notificaciones:
-    url: http://localhost:8084/api/notificaciones # Cambia esto por la URL real
+# URL del servicio que recibirá la notificación de stock actualizad
+app:
+  servicios:
+    productos:
+      url: http://localhost:8084 # Cambia esto por la URL real
