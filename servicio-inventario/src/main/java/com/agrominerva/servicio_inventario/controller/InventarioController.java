@@ -2,6 +2,7 @@ package com.agrominerva.servicio_inventario.controller;
 
 import com.agrominerva.servicio_inventario.entity.InventarioStock;
 import com.agrominerva.servicio_inventario.service.InventarioService;
+import com.agrominerva.servicio_inventario.client.ProductosClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,12 +11,15 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/inventario")
+@RequestMapping("/inventario")
 @CrossOrigin(origins = "*")
 public class InventarioController {
     
     @Autowired
     private InventarioService inventarioService;
+
+    @Autowired
+    private ProductosClient productoClient;
     
     @GetMapping
     public List<InventarioStock> getAllInventario() {
@@ -55,6 +59,7 @@ public class InventarioController {
             @RequestParam Integer stock) {
         try {
             InventarioStock inventario = inventarioService.actualizarStock(productoId, stock);
+            productoClient.notificarStockActualizado(productoId, stock);
             return ResponseEntity.ok(inventario);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

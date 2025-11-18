@@ -4,9 +4,9 @@ import com.agrominerva.servicio_inventario.dto.VentaDTO;
 import com.agrominerva.servicio_inventario.service.StockActualizadoEvent;
 import com.agrominerva.servicio_inventario.entity.InventarioStock;
 import com.agrominerva.servicio_inventario.repository.InventarioStockRepository;
+import com.agrominerva.servicio_inventario.client.ProductosClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.context.ApplicationEventPublisher;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,8 @@ public class InventarioService {
     private InventarioStockRepository inventarioRepository;
     
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private ProductosClient productoClient;
+    
     
     public List<InventarioStock> findAll() {
         return inventarioRepository.findAll();
@@ -45,9 +46,6 @@ public class InventarioService {
         InventarioStock nuevoStock = new InventarioStock(productoId, 0);
         InventarioStock saved = inventarioRepository.save(nuevoStock);
         
-        // Publicar evento para ser manejado asíncronamente
-        eventPublisher.publishEvent(new StockActualizadoEvent(productoId, 0));
-        
         return saved;
     }
     
@@ -59,8 +57,8 @@ public class InventarioService {
         inventario.setStock(nuevoStock);
         InventarioStock updated = inventarioRepository.save(inventario);
         
-        // Publicar evento para ser manejado asíncronamente
-        eventPublisher.publishEvent(new StockActualizadoEvent(productoId, nuevoStock));
+        //Notificiar a client de producto
+        productoClient.notificarStockActualizado(productoId, nuevoStock);
         
         return updated;
     }
@@ -77,8 +75,6 @@ public class InventarioService {
         inventario.aumentarStock(cantidad);
         InventarioStock updated = inventarioRepository.save(inventario);
         
-        // Publicar evento para ser manejado asíncronamente
-        eventPublisher.publishEvent(new StockActualizadoEvent(productoId, updated.getStock()));
         
         return updated;
     }
@@ -104,9 +100,6 @@ public class InventarioService {
             try {
                 inventario.disminuirStock(cantidad);
                 inventarioRepository.save(inventario);
-                
-                // Publicar evento para ser manejado asíncronamente
-                eventPublisher.publishEvent(new StockActualizadoEvent(productoId, inventario.getStock()));
                 
             } catch (RuntimeException e) {
                 throw new RuntimeException("Error procesando venta para producto " + productoId + ": " + e.getMessage());
