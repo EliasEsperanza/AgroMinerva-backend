@@ -32,6 +32,9 @@ public class Usuario {
     private String nombre;
 
     @Column(nullable = false)
+    private String telefono;
+
+    @Column(nullable = false)
     private boolean activo = true; // Valor por defecto
 
     @CreationTimestamp // Asigna la fecha y hora actual al crear

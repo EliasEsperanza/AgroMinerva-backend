@@ -1,13 +1,13 @@
 server:
-  port: 8083
+  port: 8080
 
 spring:
   application:
     name: servicio-inventario
   datasource:
-    url: jdbc:postgresql://localhost:5432/inventario_db
+    url: jdbc:postgresql://postgres_inventario:5432/inventario_db
     username: postgres
-    password: 23May@2004
+    password: TE22003
   jpa:
     hibernate:
       ddl-auto: update

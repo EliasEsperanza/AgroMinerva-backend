@@ -1,12 +1,12 @@
 package com.agrominerva.servicio_ventas.service;
 
+import com.agrominerva.servicio_ventas.client.InventarioClient;
 import com.agrominerva.servicio_ventas.model.EstadoPedido;
 import com.agrominerva.servicio_ventas.model.Pedido;
 import com.agrominerva.servicio_ventas.model.PedidoItem;
 import com.agrominerva.servicio_ventas.repository.PedidoRepository;
 import com.agrominerva.servicio_ventas.dto.CrearPedidoRequest;
 import com.agrominerva.servicio_ventas.dto.VentaDTO;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,15 +14,14 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
 @Service
 public class PedidoService {
     private final PedidoRepository pedidoRepo;
-    private final KafkaTemplate<String, Object> kafka;
+    private final InventarioClient inventarioClient;
 
-    public PedidoService(PedidoRepository pedidoRepo, KafkaTemplate<String, Object> kafka) {
+    public PedidoService(PedidoRepository pedidoRepo, InventarioClient inventarioClient) {
         this.pedidoRepo = pedidoRepo;
-        this.kafka = kafka;
+        this.inventarioClient = inventarioClient;
     }
 
     @Transactional
@@ -45,15 +44,21 @@ public class PedidoService {
         p.setTotalVenta(total);
         Pedido guardado = pedidoRepo.save(p);
 
-        // Emitir evento (solo producto_id y cantidad)
+        // Notificar al servicio de inventario vía HTTP
         VentaDTO venta = new VentaDTO();
         venta.setPedidoId(guardado.getId());
         venta.setItems(guardado.getItems().stream()
-           .map(i -> { var it = new VentaDTO.Item(); it.setProductoId(i.getProductoId()); it.setCantidad(i.getCantidad()); return it;})
+           .map(i -> { 
+               var it = new VentaDTO.Item(); 
+               it.setProductoId(i.getProductoId()); 
+               it.setCantidad(i.getCantidad()); 
+               return it;
+           })
            .collect(Collectors.toList())
         );
 
-        kafka.send("topic-venta-registrada", venta);
+        inventarioClient.notificarVentaRegistrada(venta);
+        
         return guardado;
     }
 
@@ -64,4 +69,3 @@ public class PedidoService {
         return pedidoRepo.save(p);
     }
 }
-
