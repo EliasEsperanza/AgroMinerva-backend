@@ -3,12 +3,11 @@ builder = "NIXPACKS"
 buildCommand = "chmod +x mvnw && ./mvnw -B clean package -DskipTests"
 
 [deploy]
-startCommand = "java -Dserver.port=$PORT -jar servicio-usuarios/target/servicio-usuarios-0.0.1-SNAPSHOT.jar"
+startCommand = "java -jar servicio-usuarios/target/servicio-usuarios-0.0.1-SNAPSHOT.jar"
 healthCheckPath = "/actuator/health"
 healthCheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
 
 [env]
-PORT = "8080"
 JAVA_VERSION = "21"
 SPRING_PROFILES_ACTIVE = "prod"
