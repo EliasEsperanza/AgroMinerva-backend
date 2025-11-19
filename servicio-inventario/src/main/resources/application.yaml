@@ -5,12 +5,11 @@ spring:
   application:
     name: servicio-inventario
   datasource:
-    url: postgresql://postgres:umgejQRYurHzgZcCXobRZGQcAFdNQYpK@postgres.railway.internal:5432/railway
-    username: postgres
+    url: jdbc:postgresql://hopper.proxy.rlwy.net:32257/railway
     password: umgejQRYurHzgZcCXobRZGQcAFdNQYpK
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
