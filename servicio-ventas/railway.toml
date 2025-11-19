@@ -1,0 +1,16 @@
+
+[build]
+builder = "NIXPACKS"
+buildCommand = "chmod +x mvnw && ./mvnw clean package -DskipTests"
+
+[deploy]
+startCommand = "java $JAVA_OPTS -jar target/*.jar"
+healthCheckPath = "/actuator/health"
+healthCheckTimeout = 120
+restartPolicyType = "ON_FAILURE"
+
+[env]
+PORT = "8080"
+JAVA_VERSION = "17"
+JAVA_OPTS = "-Xmx512m -Xms256m -Dserver.port=$PORT"
+SPRING_PROFILES_ACTIVE = "prod"
