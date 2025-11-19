@@ -1,16 +1,14 @@
-# railway.toml
 [build]
 builder = "NIXPACKS"
-buildCommand = "chmod +x mvnw && ./mvnw clean package -DskipTests"
+buildCommand = "chmod +x mvnw && ./mvnw -B clean package -DskipTests"
 
 [deploy]
-startCommand = "java $JAVA_OPTS -jar target/*.jar"
+startCommand = "java -Dserver.port=$PORT -jar $(ls target/*.jar | head -n 1)"
 healthCheckPath = "/actuator/health"
 healthCheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
 
 [env]
 PORT = "8080"
-JAVA_VERSION = "17"
-JAVA_OPTS = "-Xmx512m -Xms256m -Dserver.port=$PORT"
+JAVA_VERSION = "21"
 SPRING_PROFILES_ACTIVE = "prod"
