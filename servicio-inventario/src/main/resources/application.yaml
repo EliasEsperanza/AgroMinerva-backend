@@ -5,9 +5,9 @@ spring:
   application:
     name: servicio-inventario
   datasource:
-    url: ${DATABASE_URL}
-    username: ${PGUSER}
-    password: ${PGPASSWORD}
+    url: postgresql://postgres:umgejQRYurHzgZcCXobRZGQcAFdNQYpK@postgres.railway.internal:5432/railway
+    username: postgres
+    password: umgejQRYurHzgZcCXobRZGQcAFdNQYpK
   jpa:
     hibernate:
       ddl-auto: validate
