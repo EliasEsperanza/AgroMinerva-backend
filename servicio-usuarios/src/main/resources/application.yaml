@@ -3,9 +3,9 @@ spring:
     name: servicio-usuarios
   datasource:
     # Conecta a la base de datos de usuarios
-    url: jdbc:postgresql://postgres_usuarios:5432/usuarios_db
-    username: postgres
-    password: TE22003
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   # --- Configuración de JPA (Hibernate) ---
   jpa:
