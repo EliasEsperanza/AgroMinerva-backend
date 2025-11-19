@@ -1,10 +1,9 @@
-# railway.toml
 [build]
 builder = "NIXPACKS"
 buildCommand = "chmod +x mvnw && ./mvnw clean package -DskipTests"
 
 [deploy]
-startCommand = "java -Xmx512m -Xms256m -Dserver.port=$PORT -jar target/*.jar"
+startCommand = "java -Xmx512m -Xms256m -Dserver.port=$PORT -jar target/servicio-productos.jar"
 healthCheckPath = "/actuator/health"
 healthCheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
