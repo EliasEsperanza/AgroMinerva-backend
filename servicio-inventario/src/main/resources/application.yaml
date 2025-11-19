@@ -5,7 +5,7 @@ spring:
   application:
     name: servicio-inventario
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    url: ${DATABASE_PUBLIC_URL}
     username: ${PGUSER}
     password: ${PGPASSWORD}
   jpa:
