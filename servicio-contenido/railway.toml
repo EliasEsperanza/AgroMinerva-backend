@@ -9,7 +9,7 @@ healthCheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
 
 [env]
-PORT = "8080"
-JAVA_VERSION = "17"
+PORT = "8082"
+JAVA_VERSION = "21"
 JAVA_OPTS = "-Xmx512m -Xms256m -Dserver.port=$PORT"
 SPRING_PROFILES_ACTIVE = "prod"
