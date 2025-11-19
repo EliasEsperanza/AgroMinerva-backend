@@ -3,7 +3,7 @@ builder = "NIXPACKS"
 buildCommand = "chmod +x mvnw && ./mvnw -B clean package -DskipTests"
 
 [deploy]
-startCommand = "java -Dserver.port=$PORT -jar $(ls target/*.jar | head -n 1)"
+startCommand = "java -Dserver.port=$PORT -jar servicio-usuarios/target/*.jar"
 healthCheckPath = "/actuator/health"
 healthCheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
