@@ -6,8 +6,8 @@ spring:
     name: servicio-inventario
   datasource:
     url: jdbc:postgresql://postgres-inventario:5432/inventario_db
-    username: postgres
-    password: postgres
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
