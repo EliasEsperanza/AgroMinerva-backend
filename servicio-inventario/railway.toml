@@ -3,7 +3,7 @@ builder = "NIXPACKS"
 buildCommand = "chmod +x mvnw && ./mvnw clean package -DskipTests"
 
 [deploy]
-startCommand = "java $JAVA_OPTS -jar target/*.jar"
+startCommand = "java -jar target/*.jar"
 healthCheckPath = "/actuator/health"
 healthCheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
