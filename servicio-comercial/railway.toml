@@ -1,6 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "chmod +x mvnw && ./mvnw clean package -DskipTests"
+buildCommand = "mvn -B -DskipTests clean package"
 
 [deploy]
 startCommand = "java $JAVA_OPTS -jar servicio-comercial/target/*.jar --server.port=$PORT"
