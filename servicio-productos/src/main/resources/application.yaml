@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/productos_db
     username: postgres
-    password: 23May@2004
+    password: TE22003
   jpa:
     hibernate:
       ddl-auto: update
