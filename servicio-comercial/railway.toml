@@ -3,13 +3,11 @@ builder = "NIXPACKS"
 buildCommand = "mvn -B -DskipTests clean package"
 
 [deploy]
-startCommand = "java $JAVA_OPTS -jar servicio-comercial/target/*.jar --server.port=$PORT"
+startCommand = "java $JAVA_OPTS -jar target/*.jar --server.port=$PORT"
 healthCheckPath = "/actuator/health"
 healthCheckTimeout = 120
-restartPolicyType = "ON_FAILURE"
 
 [env]
 PORT = "8084"
-JAVA_VERSION = "21"
-JAVA_OPTS = "-Xmx512m -Xms256m"
 SPRING_PROFILES_ACTIVE = "prod"
+JAVA_OPTS = "-Xmx512m -Xms256m"
