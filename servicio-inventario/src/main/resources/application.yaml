@@ -5,9 +5,9 @@ spring:
   application:
     name: servicio-inventario
   datasource:
-    url: jdbc:postgresql://hopper.proxy.rlwy.net:32257/inventario_db
-    username: postgres
-    password: umgejQRYurHzgZcCXobRZGQcAFdNQYpK
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -34,4 +34,4 @@ logging:
 app:
   servicios:
     productos:
-      url: http://localhost:8085 # Cambia esto por la URL real
+      url: ${PRODUCTOS_URL} # Cambia esto por la URL real

@@ -5,9 +5,9 @@ spring:
   application:
     name: servicio-productos
   datasource:
-    url: jdbc:postgresql://localhost:5432/productos_db
-    username: postgres
-    password: 23May@2004
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -27,4 +27,4 @@ app:
     inventario:
       # Si usas Docker Compose, usa el nombre del servicio
       # Ejemplo: http://servicio-inventario:8082
-      url: http://localhost:8083
+      url: ${INVENTARIO_URL}
