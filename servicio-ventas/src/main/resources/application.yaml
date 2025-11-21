@@ -4,10 +4,9 @@ spring:
 
   # --- Configuración de Base de Datos (PostgreSQL) ---
   datasource:
-    url: jdbc:postgresql://localhost:5432/ventas_db
-    username: postgres
-    password: TE22003
-
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
   # --- Configuración de JPA (Hibernate) ---
   jpa:
     hibernate:
@@ -15,7 +14,7 @@ spring:
     show-sql: true
 
 server:
-  port: 8080
+  port: 8081
 
 # --- Configuración de URLs de otros servicios ---
 app:
@@ -23,4 +22,4 @@ app:
     inventario:
       # Si usas Docker Compose, usa el nombre del servicio
       # Ejemplo: http://servicio-inventario:8082
-      url: http://localhost:8082
+      url: ${INVENTARIO_URL}
