@@ -4,9 +4,9 @@ spring:
       # --- Configuración de Base de Datos (PostgreSQL) ---
   datasource:
     # Conecta a la base de datos de contenido
-    url: jdbc:postgresql://postgres_contenido:5432/contenido_db
-    username: postgres
-    password: TE22003
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
 
   # --- Configuración de JPA (Hibernate) ---
   jpa:
@@ -22,4 +22,4 @@ spring:
     bootstrap-servers: localhost:9092
 
 server:
-  port: 8080
+  port: 8082
