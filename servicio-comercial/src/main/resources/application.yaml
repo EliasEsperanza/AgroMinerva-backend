@@ -5,9 +5,9 @@ spring:
   application:
     name: servicio-comercial
   datasource:
-    url: jdbc:postgresql://postgres:tuGcegjmeNKvUNQvxDCTrndBpwTIIned@shuttle.proxy.rlwy.net:19295/railway
-    username: postgres
-    password: tuGcegjmeNKvUNQvxDCTrndBpwTIIned
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
