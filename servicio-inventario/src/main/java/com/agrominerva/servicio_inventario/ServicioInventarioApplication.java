@@ -6,7 +6,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 
 @SpringBootApplication
-@EnableAsync(proxyTargetClass = true)
 public class ServicioInventarioApplication {
 
 	public static void main(String[] args) {
