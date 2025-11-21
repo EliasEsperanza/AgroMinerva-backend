@@ -4,7 +4,7 @@ spring:
 
   # --- Configuración de Base de Datos (PostgreSQL) ---
   datasource:
-    url: jdbc:postgresql://postgres_ventas:5432/ventas_db
+    url: jdbc:postgresql://localhost:5432/ventas_db
     username: postgres
     password: TE22003
 

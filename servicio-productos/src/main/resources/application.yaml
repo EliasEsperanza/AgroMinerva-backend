@@ -5,9 +5,9 @@ spring:
   application:
     name: servicio-productos
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
-    username: ${PGUSER}
-    password: ${PGPASSWORD}
+    url: jdbc:postgresql://localhost:5432/productos_db
+    username: postgres
+    password: TE22003
   jpa:
     hibernate:
       ddl-auto: update
